@@ -46,7 +46,10 @@
         executable: /usr/bin/bash
         cmd: bash deploy.sh
         chdir: "{{ playbook_path }}/{{ module_name }}/"
+      register: results
       when: destroy == "false" 
+    - debug:
+        var: results.stdout
 
     - name: Destroy {{ module_name | capitalize }} Resources
       shell:
@@ -54,7 +57,10 @@
         executable: /usr/bin/bash
         cmd: bash deploy.sh
         chdir: "{{ playbook_path }}/{{ module_name }}/"
+      register: "{{ project_dir }}_{{ module_name }}_results"
       when: destroy == "true" 
+    - debug:
+        var: "{{ project_dir }}_{{ module_name }}_results.stdout"
 
 
     # - name: Run Terraform to Destroy Static Resources
