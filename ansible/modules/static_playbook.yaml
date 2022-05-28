@@ -3,51 +3,59 @@
   become: false
 
   vars_files:
-  - ../vars/jenkins_vars.yml
+  - ../vars/static_vars.yml
 
   vars:
-    project_path: ~/Git/JenkinsECS/terraform/jenkins
+    # EXTRA VARS
+    destroy: false
+    cloud_provider: aws
+
+    # TERRAFORM PROJECT VARS
+    project_path: ../../terraform/aws/static
     state: present
-    aws_region: us-west-1
+
+    # REMOTE STATE VARS
+    aws_region: us-west-2
     state_bucket: jenkins-state-nightwalkers 
     state_object_key: us-east-1/s3/jenkins-terraform.tfstate
     lock_db: tf-state-jenkins-lock
-    PRIVATE_SUBNETS: '["subnet-5d12c221","subnet-2178df6d","subnet-29452043"]'
-    PUBLIC_SUBNETS: '["subnet-057d1da9eccbc21f5","subnet-0e191545ee05b0ad5","subnet-04d21adeb136042c1"]'
 
   environment:
 
-    TF_VAR_state_bucket_name: jenkins-state-nightwalkers 
-    TF_VAR_state_object_key: us-east-1/s3/jenkins-terraform.tfstate
-    TF_VAR_state_lock_table_name: tf-state-jenkins-lock
-    AWS_REGION: "{{ aws_region }}"
+    TF_VAR_state_bucket_name: {{ state_bucket }} 
+    TF_VAR_state_object_key: {{ state_object_key }}
+    TF_VAR_state_lock_table_name: {{ lock_db }}
+    AWS_REGION: {{ aws_region }}
 
-    TF_VAR_route53_zone_id: "Z06494431NLTSXDDSOF83"
-    TF_VAR_route53_domain_name: "exampledomain.com"
-    TF_VAR_vpc_id: "vpc-za7f9bd0"
-    TF_VAR_efs_subnet_ids: "{{PRIVATE_SUBNETS}}"
-    TF_VAR_jenkins_controller_subnet_ids: "{{PRIVATE_SUBNETS}}"
-    TF_VAR_alb_subnet_ids: "{{PUBLIC_SUBNETS}}"
+    # TF_VAR_shared_vpc_name: nightwalkers-vpc
+    # TF_VAR_public_subnet_cidrs: "{{ lookup('aws_secret', 'alinedbSecret.username', region='us-east-1', nested=true) }}"
+    # TF_VAR_private_subnet_cidrs: "{{ lookup('aws_secret', 'alinedbSecret.username', region='us-east-1', nested=true) }}"
+    # TF_VAR_rds_subnet_cidrs: "{{ lookup('aws_secret', 'alinedbSecret.username', region='us-east-1', nested=true) }}"
 
 
   tasks:
-    # - name: Run Terraform for Static Resources
-    #   script: ~/Git/Heirophany/templates/ansible/aws-static/terraform/static/run.sh
+    - name: Run Terraform for Static Resources
+      script: "{{ project_path }}/aws/static/deploy.sh"
+      when: destroy == "false" && cloud_provider == "aws"
 
-    - name: Define the backend configuration at init
-      community.general.terraform:
-        project_path: "{{ project_path }}"
-        state: "{{ state }}"
-        force_init: true
-        backend_config:
-          region: "{{ aws_region }}"
-          bucket: "{{ state_bucket }}"
-          key: "{{ state_object_key }}"
+    - name: Run Terraform to Destroy Static Resources
+      script: "{{ project_path }}/aws/static/destroy.sh"
+      when: destroy == "true" && cloud_provider == "aws"
 
-    - name: Basic deploy of a service
-      community.general.terraform:
-        project_path: '{{ project_dir }}'
-        state: "{{ state }}"
+    # - name: Define the backend configuration at init
+    #   community.general.terraform:
+    #     project_path: "{{ project_path }}"
+    #     state: "{{ state }}"
+    #     force_init: true
+    #     backend_config:
+    #       region: "{{ aws_region }}"
+    #       bucket: "{{ state_bucket }}"
+    #       key: "{{ state_object_key }}"
+
+    # - name: Basic deploy of a service
+    #   community.general.terraform:
+    #     project_path: '{{ project_dir }}'
+    #     state: "{{ state }}"
 
     # - name: Define the backend configuration with one or more files at init
     #   community.general.terraform:
