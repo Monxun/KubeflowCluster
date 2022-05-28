@@ -40,11 +40,11 @@
       args:
         executable: /usr/bin/bash
         cmd: bash deploy.sh
-        chdir: "{{ playbook_path }}/{{ module_name }}/{{ cluster_type }}/"
-      register: results
+        chdir: "{{ playbook_path }}/{{ module_name }}s/{{ cluster_type }}/"
+      register: "{{ project_dir }}_{{ module_name }}_results"
       when: destroy == "false" 
-    - debug:
-        var: results.stdout
+    # - debug:
+    #     var: results.stdout
 
     - name: Destroy {{ module_name | capitalize }} Resources
       shell:
@@ -54,7 +54,7 @@
         chdir: "{{ playbook_path }}/{{ module_name }}/{{ cluster_type }}/"
       register: "{{ project_dir }}_{{ module_name }}_results"
       when: destroy == "true" 
-    - debug:
-        var: "{{ project_dir }}_{{ module_name }}_results.stdout"
+    # - debug:
+    #     var: "{{ project_dir }}_{{ module_name }}_results.stdout"
 
     
