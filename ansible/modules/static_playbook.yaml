@@ -2,8 +2,11 @@
 - hosts: localhost
   become: false
 
+# ////////////////////////////////////////////////////////////////////////////////////////
+#  VARIABLES
+# ////////////////////////////////////////////////////////////////////////////////////////
   vars_files:
-  - ../vars/aws/static_vars_aws.yaml
+  - "../vars/{{ cloud_provider }}/{{ module_name }}_vars_{{ cloud_provider }}.yaml"
 
   vars:
     # EXTRA VARS
@@ -25,18 +28,15 @@
     module_name: static
     playbook_path: "{{ project_path }}/{{ project_dir }}/ansible/terraform/{{ cloud_provider }}"
 
-
+# ////////////////////////////////////////////////////////////////////////////////////////
+#  VARIABLES
+# ////////////////////////////////////////////////////////////////////////////////////////
   environment:
 
     TF_VAR_state_bucket_name: "{{ state_bucket }}" 
     TF_VAR_state_object_key: "{{ state_object_key }}"
     TF_VAR_state_lock_table_name: "{{ lock_db }}"
     AWS_REGION: "{{ aws_region }}"
-
-    # TF_VAR_shared_vpc_name: nightwalkers-vpc
-    # TF_VAR_public_subnet_cidrs: "{{ lookup('aws_secret', 'alinedbSecret.username', region='us-east-1', nested=true) }}"
-    # TF_VAR_private_subnet_cidrs: "{{ lookup('aws_secret', 'alinedbSecret.username', region='us-east-1', nested=true) }}"
-    # TF_VAR_rds_subnet_cidrs: "{{ lookup('aws_secret', 'alinedbSecret.username', region='us-east-1', nested=true) }}"
 
 
   tasks:
@@ -61,87 +61,3 @@
       when: destroy == "true" 
     - debug:
         var: "{{ project_dir }}_{{ module_name }}_results.stdout"
-
-
-    # - name: Run Terraform to Destroy Static Resources
-    #   ansible.builtin.shell: "{{ project_path }}/{{ project_dir }}/ansible/terraform/{{ cloud_provider }}/static/destroy.sh"
-    #   when: destroy == "true"
-
-    # - name: Define the backend configuration at init
-    #   community.general.terraform:
-    #     project_path: "{{ project_path }}"
-    #     state: "{{ state }}"
-    #     force_init: true
-    #     backend_config:
-    #       region: "{{ aws_region }}"
-    #       bucket: "{{ state_bucket }}"
-    #       key: "{{ state_object_key }}"
-
-    # - name: Basic deploy of a service
-    #   community.general.terraform:
-    #     project_path: '{{ project_dir }}'
-    #     state: "{{ state }}"
-
-    # - name: Define the backend configuration with one or more files at init
-    #   community.general.terraform:
-    #     project_path: 'project/'
-    #     state: "{{ state }}"
-    #     force_init: true
-    #     backend_config_files:
-    #       - /path/to/backend_config_file_1
-    #       - /path/to/backend_config_file_2
-
-    # - name: Disable plugin discovery and auto-download by setting plugin_paths
-    #   community.general.terraform:
-    #     project_path: 'project/'
-    #     state: "{{ state }}"
-    #     force_init: true
-    #     plugin_paths:
-    #       - /path/to/plugins_dir_1
-    #       - /path/to/plugins_dir_2
-
-### Example directory structure for plugin_paths example
-# $ tree /path/to/plugins_dir_1
-# /path/to/plugins_dir_1/
-# └── registry.terraform.io
-#     └── hashicorp
-#         └── vsphere
-#             ├── 1.24.0
-#             │   └── linux_amd64
-#             │       └── terraform-provider-vsphere_v1.24.0_x4
-#             └── 1.26.0
-#                 └── linux_amd64
-#                     └── terraform-provider-vsphere_v1.26.0_x4
-
-
-
-    # - name: Add Terraform Outputs to AWS Secrets Manager
-    #     community.aws.aws_secret:
-    #     name: 'test_secret_string'
-    #     state: present
-    #     secret_type: 'string'
-    #     secret: "{{ super_secret_string }}"
-
-    # - name: Add string to AWS Secrets Manager
-    #     community.aws.aws_secret:
-    #     name: 'test_secret_string'
-    #     state: present
-    #     secret_type: 'string'
-    #     secret: "{{ super_secret_string }}"
-    # - name: remove string from AWS Secrets Manager
-    #   community.aws.aws_secret:
-    #     name: 'test_secret_string'
-    #     state: absent
-    #     secret_type: 'string'
-    #     secret: "{{ super_secret_string }}"
-      
-
-  #   - name: get Terraform networking variables
-  #     fetch_terraform_backend_outputs:
-  #       bucket: "jenkins-state-nightwalkers"
-  #       object: "eu-west-1/networking.tfstate"
-  #     register: networking
-  #   - name: filter vpc id
-  #     debug:
-  #       msg: "{{ networking.vars.katapult_cloud_vpc_id }}"
-  
