@@ -22,6 +22,7 @@
     lock_db: tf-state-jenkins-lock
 
     # PLAYBOOK VARS
+    module_name: static
     playbook_path: "{{ project_path }}/{{ project_dir }}/ansible/terraform/{{ cloud_provider }}"
 
 
@@ -39,20 +40,20 @@
 
 
   tasks:
-    - name: Run Terraform for Static Resources
+    - name: Run Terraform Deployment for {{ module_name | capitalize }} Resources
       shell:
       args:
         executable: /usr/bin/bash
         cmd: bash deploy.sh
-        chdir: "{{ playbook_path }}/static/"
+        chdir: "{{ playbook_path }}/{{ module_name }}/"
       when: destroy == "false" 
 
-    - name: Run Terraform for Static Resources
+    - name: Destroy {{ module_name | capitalize }} Resources
       shell:
       args:
         executable: /usr/bin/bash
         cmd: bash deploy.sh
-        chdir: "{{ playbook_path }}/static/"
+        chdir: "{{ playbook_path }}/{{ module_name }}/"
       when: destroy == "true" 
 
 

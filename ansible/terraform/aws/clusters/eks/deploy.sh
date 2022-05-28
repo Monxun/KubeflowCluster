@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# set -e
+
+# source vars.sh
+
+# Start from a clean slate
+
 export DEPLOYMENT_NAME=${PWD##*/}  
 
 rm -rf .terraform

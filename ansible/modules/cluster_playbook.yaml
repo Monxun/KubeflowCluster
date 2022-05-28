@@ -3,7 +3,7 @@
   become: false
 
   vars_files:
-  - ../vars/eks_vars.yml
+  - ../vars/eks_vars_aws.yml
 
   vars:
     # EXTRA VARS
@@ -21,6 +21,11 @@
     state_bucket: jenkins-state-nightwalkers 
     state_object_key: us-east-1/s3/jenkins-terraform.tfstate
     lock_db: tf-state-jenkins-lock
+
+     # PLAYBOOK VARS
+    module_name: cluster
+    playbook_path: "{{ project_path }}/{{ project_dir }}/ansible/terraform/{{ cloud_provider }}"
+
     
   environment:
 
@@ -38,13 +43,20 @@
 
 
   tasks:
-    # AWS DEPLOY / DESTROY
-    - name: Run Terraform to Deploy EKS Resources
-      ansible.builtin.shell: "{{ project_path }}/{{ project_dir }}/ansible/terraform/{{ cloud_provider }}/{{ cluster_type }}/deploy.sh"
+    - name: Run Terraform Deployment for {{ cluster_type | upper }} Resources
+      shell:
+      args:
+        executable: /usr/bin/bash
+        cmd: bash deploy.sh
+        chdir: "{{ playbook_path }}/{{ module_name }}/{{ cluster_type }}/"
       when: destroy == "false" 
 
-    - name: Run Terraform to Destroy EKS Resources
-      ansible.builtin.shell: "{{ project_path }}/{{ project_dir }}/ansible/terraform/{{ cloud_provider }}/{{ cluster_type }}/destroy.sh"
+    - name: Destroy {{ module_name | capitalize }} Resources
+      shell:
+      args:
+        executable: /usr/bin/bash
+        cmd: bash deploy.sh
+        chdir: "{{ playbook_path }}/{{ module_name }}/{{ cluster_type }}/"
       when: destroy == "true" 
 
     # - name: Define the backend configuration at init

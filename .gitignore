@@ -130,3 +130,5 @@ dmypy.json
 ansible/terraform/aws/static/.terraform.lock.hcl
 ansible/terraform/aws/static/tf-jenkins.plan
 ansible/terraform/aws/static/.terraform/terraform.tfstate
+ansible/terraform/aws/static/.terraform/providers/registry.terraform.io/hashicorp/aws/4.16.0/linux_amd64/terraform-provider-aws_v4.16.0_x5
+ansible/terraform/aws/static/tf-static.plan
