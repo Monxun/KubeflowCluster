@@ -11,8 +11,10 @@
     cloud_provider: aws
 
     # PROJECT VARS
-    project_path: ../../terraform
+    project_dir: KubeflowCluster
+    project_path: ~/Git
     state: present
+    cluster_type: eks
 
     # REMOTE STATE VARS
     aws_region: us-west-2
@@ -22,10 +24,10 @@
     
   environment:
 
-    TF_VAR_state_bucket_name: {{ state_bucket }} 
-    TF_VAR_state_object_key: {{ state_object_key }}
-    TF_VAR_state_lock_table_name: {{ lock_db }}
-    AWS_REGION: {{ aws_region }}
+    TF_VAR_state_bucket_name: "{{ state_bucket }}"
+    TF_VAR_state_object_key: "{{ state_object_key }}"
+    TF_VAR_state_lock_table_name: "{{ lock_db }}"
+    AWS_REGION: "{{ aws_region }}"
 
     # TF_VAR_route53_zone_id: "Z06494431NLTSXDDSOF83"
     # TF_VAR_route53_domain_name: "exampledomain.com"
@@ -38,12 +40,12 @@
   tasks:
     # AWS DEPLOY / DESTROY
     - name: Run Terraform to Deploy EKS Resources
-      script: "{{ project_path }}/aws/eks/deploy.sh"
-      when: destroy == "false" && cloud_provider == "aws"
+      ansible.builtin.shell: "{{ project_path }}/{{ project_dir }}/ansible/terraform/{{ cloud_provider }}/{{ cluster_type }}/deploy.sh"
+      when: destroy == "false" 
 
     - name: Run Terraform to Destroy EKS Resources
-      script: "{{ project_path }}/aws/eks/destroy.sh"
-      when: destroy == "true" && cloud_provider == "aws"
+      ansible.builtin.shell: "{{ project_path }}/{{ project_dir }}/ansible/terraform/{{ cloud_provider }}/{{ cluster_type }}/destroy.sh"
+      when: destroy == "true" 
 
     # - name: Define the backend configuration at init
     #   community.general.terraform:

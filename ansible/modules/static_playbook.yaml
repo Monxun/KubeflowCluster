@@ -3,15 +3,16 @@
   become: false
 
   vars_files:
-  - ../vars/static_vars.yml
+  - ../vars/aws/static_vars_aws.yaml
 
   vars:
     # EXTRA VARS
     destroy: false
     cloud_provider: aws
 
-    # TERRAFORM PROJECT VARS
-    project_path: ../../terraform/aws/static
+    # PROJECT VARS
+    project_dir: KubeflowCluster
+    project_path: ~/Git
     state: present
 
     # REMOTE STATE VARS
@@ -20,12 +21,16 @@
     state_object_key: us-east-1/s3/jenkins-terraform.tfstate
     lock_db: tf-state-jenkins-lock
 
+    # PLAYBOOK VARS
+    playbook_path: "{{ project_path }}/{{ project_dir }}/ansible/terraform/{{ cloud_provider }}"
+
+
   environment:
 
-    TF_VAR_state_bucket_name: {{ state_bucket }} 
-    TF_VAR_state_object_key: {{ state_object_key }}
-    TF_VAR_state_lock_table_name: {{ lock_db }}
-    AWS_REGION: {{ aws_region }}
+    TF_VAR_state_bucket_name: "{{ state_bucket }}" 
+    TF_VAR_state_object_key: "{{ state_object_key }}"
+    TF_VAR_state_lock_table_name: "{{ lock_db }}"
+    AWS_REGION: "{{ aws_region }}"
 
     # TF_VAR_shared_vpc_name: nightwalkers-vpc
     # TF_VAR_public_subnet_cidrs: "{{ lookup('aws_secret', 'alinedbSecret.username', region='us-east-1', nested=true) }}"
@@ -35,12 +40,25 @@
 
   tasks:
     - name: Run Terraform for Static Resources
-      script: "{{ project_path }}/aws/static/deploy.sh"
-      when: destroy == "false" && cloud_provider == "aws"
+      shell:
+      args:
+        executable: /usr/bin/bash
+        cmd: bash deploy.sh
+        chdir: "{{ playbook_path }}/static/"
+      when: destroy == "false" 
 
-    - name: Run Terraform to Destroy Static Resources
-      script: "{{ project_path }}/aws/static/destroy.sh"
-      when: destroy == "true" && cloud_provider == "aws"
+    - name: Run Terraform for Static Resources
+      shell:
+      args:
+        executable: /usr/bin/bash
+        cmd: bash deploy.sh
+        chdir: "{{ playbook_path }}/static/"
+      when: destroy == "true" 
+
+
+    # - name: Run Terraform to Destroy Static Resources
+    #   ansible.builtin.shell: "{{ project_path }}/{{ project_dir }}/ansible/terraform/{{ cloud_provider }}/static/destroy.sh"
+    #   when: destroy == "true"
 
     # - name: Define the backend configuration at init
     #   community.general.terraform:

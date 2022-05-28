@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+ansible/terraform/aws/static/.terraform.lock.hcl
+ansible/terraform/aws/static/tf-jenkins.plan
+ansible/terraform/aws/static/.terraform/terraform.tfstate
