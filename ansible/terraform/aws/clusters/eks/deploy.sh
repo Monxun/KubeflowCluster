@@ -22,3 +22,5 @@ terraform apply \
     -auto-approve=true \
     -lock=false \
     tf-$DEPLOYMENT_NAME.plan
+
+kubectl konfig import -s kubeconfig_mg-aline-eks
