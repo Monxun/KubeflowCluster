@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-source jenkins/deploy_static.sh
-source jenkins/deploy_jenkins.sh
+source aws/static/deploy.sh
+source aws/clusters/eks/deploy.sh
