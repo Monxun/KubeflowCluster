@@ -7,10 +7,10 @@ owner_name: mg
 workspace_name: jenkins       #TERRAFORM WORKSPACE NAME
 
 provisioner_type: terraform   # terraform OR scripts
-provider_type: aws            #| TERRAFORM: aws, gcp | SCRIPTS: kind, k3s, k3ai
+provider_type: gcp            #| TERRAFORM: aws, gcp | SCRIPTS: kind, k3s, k3ai
 
 cluster_name: kubeflow        # WHAT TO NAME THE NEW CLUSTER
-cluster_selector: eks         # DETERMINE CLUSTER TYPE
+cluster_selector: gke         # DETERMINE CLUSTER TYPE
                               # eks, ecs, gke, gcm, kind, k3s, k3ai
 
 # CLOUD PROVIDER DETAILS
