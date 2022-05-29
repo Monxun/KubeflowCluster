@@ -23,4 +23,5 @@ terraform apply \
     -lock=false \
     tf-$DEPLOYMENT_NAME.plan
 
-kubectl konfig import -s kubeconfig_mg-aline-eks
+# kubectl konfig import -s kubeconfig_mg-aline-eks
+aws eks --region us-west-2 update-kubeconfig --name mg-aline-eks
