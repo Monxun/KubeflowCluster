@@ -1,0 +1,3 @@
+---
+- import_playbook: ./modules/cluster_playbook.yaml
+- import_playbook: ./modules/static_playbook.yaml

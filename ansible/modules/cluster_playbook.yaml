@@ -41,7 +41,7 @@
         executable: /usr/bin/bash
         cmd: bash deploy.sh
         chdir: "{{ playbook_path }}/{{ module_name }}s/{{ cluster_type }}/"
-      register: destroy_cluster_results
+      register: deploy_cluster_results
       when: destroy == "false" 
     # - debug:
     #     var: results.stdout
@@ -51,7 +51,7 @@
       args:
         executable: /usr/bin/bash
         cmd: bash deploy.sh
-        chdir: "{{ playbook_path }}/{{ module_name }}/{{ cluster_type }}/"
+        chdir: "{{ playbook_path }}/{{ module_name }}s/{{ cluster_type }}/"
       register: destroy_cluster_results
       when: destroy == "true" 
     # - debug:
