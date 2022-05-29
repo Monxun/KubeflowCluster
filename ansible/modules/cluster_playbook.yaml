@@ -8,7 +8,8 @@
   vars:
     # EXTRA VARS
     destroy: false
-    cloud_provider: aws
+    provisioner: terraform  # 'terraform' or 'scripts' 
+    cloud_provider: aws     # 'aws', 'gcp', 'none'
 
     # PROJECT VARS
     project_dir: KubeflowCluster
@@ -24,7 +25,7 @@
 
      # PLAYBOOK VARS
     module_name: cluster
-    playbook_path: "{{ project_path }}/{{ project_dir }}/ansible/terraform/{{ cloud_provider }}"
+    playbook_path: "{{ project_path }}/{{ project_dir }}/ansible/{{ provisioner }}"
 
     
   environment:
@@ -40,9 +41,9 @@
       args:
         executable: /usr/bin/bash
         cmd: bash deploy.sh
-        chdir: "{{ playbook_path }}/{{ module_name }}s/{{ cluster_type }}/"
+        chdir: "{{ playbook_path }}/{{ cloud_provider }}/{{ module_name }}s/{{ cluster_type }}/"
       register: deploy_cluster_results
-      when: destroy == "false" 
+      when: (destroy == "false") and (provisioner == "terraform")
     # - debug:
     #     var: results.stdout
 
