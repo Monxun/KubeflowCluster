@@ -1,10 +1,13 @@
 ---
+# PROJECT DETAILS
+repo_name: KubeflowCluster
+repo_path: ~/Git  # PATH OF REPO DIR ROOT 
+
+workspace_name: jenkins #TERRAFORM WORKSPACE NAME
+
 provisioner_type: scripts
 provider_type: aws  
 #| TERRAFORM: aws, gcp | SCRIPTS: kind, k3s, k3ai
-
-repo_name: KubeflowCluster
-repo_path: ~/Git
 
 cluster_selector: k3ai  
 # eks, ecs, gke, gcm, kind, k3s, k3ai
@@ -12,6 +15,7 @@ cluster_selector: k3ai
 aws_default_region: us-west-2
 gcp_default_region: us-west1
 
+# REMOTE STATE
 state_bucket: jenkins-state-nightwalkers
 state_object_key: us-east-1/s3/jenkins-terraform.tfstate
 lock_db: tf-state-jenkins-lock

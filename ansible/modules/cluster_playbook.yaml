@@ -33,6 +33,7 @@
 #  ENVIRONMENT VARIABLES
 # ////////////////////////////////////////////////////////////////////////////////////////
   environment:
+    TF_VAR_workspace_name: "{{ workspace_name }}"
 
     TF_VAR_state_bucket_name: "{{ state_bucket }}"
     TF_VAR_state_object_key: "{{ state_object_key }}"
@@ -59,12 +60,12 @@
     
 
   # DESTROY //////////////////////////////////////////////////////////////////////
-    - name: Destroy {{ module_name | capitalize }} Resources
+    - name: Destroy {{ module_name | capitalize }} Resources ({{ cluster_type }})
       shell:
       args:
         executable: /usr/bin/bash
         cmd: bash destroy.sh
-        chdir: "{{ playbook_path }}/{{ module_name }}s/{{ cluster_type }}/"
+        chdir: "{{ playbook_path }}/{{ cloud_provider }}/{{ module_name }}s/{{ cluster_type }}/"
       register: destroy_cluster_results
       when: (destroy == "true") and (provisioner == "terraform")
     # - debug:
@@ -82,7 +83,7 @@
         executable: /usr/bin/bash
         cmd: "bash {{ cluster_type }}.sh"
         chdir: "{{ playbook_path }}/"
-      register: destroy_cluster_results
+      register: deploy_cluster_results
       when: (destroy == "false") and (provisioner == "scripts")
     # - debug:
     #     var: "{{ project_dir }}_{{ module_name }}_results.stdout"
@@ -96,7 +97,7 @@
         cmd: "bash {{ cluster_type }}.sh"
         chdir: "{{ playbook_path }}/"
       register: destroy_cluster_results
-      when: (destroy == "false") and (provisioner == "scripts")
+      when: (destroy == "true") and (provisioner == "scripts")
     # - debug:
     #     var: "{{ project_dir }}_{{ module_name }}_results.stdout"
 
