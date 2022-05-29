@@ -50,7 +50,7 @@
       shell:
       args:
         executable: /usr/bin/bash
-        cmd: bash deploy.sh
+        cmd: bash destroy.sh
         chdir: "{{ playbook_path }}/{{ module_name }}s/{{ cluster_type }}/"
       register: destroy_cluster_results
       when: destroy == "true" 

@@ -19,10 +19,13 @@
     state: present
 
     # REMOTE STATE VARS
+    workspace_name: jenkins
     aws_region: us-west-2
     state_bucket: jenkins-state-nightwalkers 
     state_object_key: us-east-1/s3/jenkins-terraform.tfstate
     lock_db: tf-state-jenkins-lock
+
+    vpc_name: nightwalkers-vpc-vpc
 
     # PLAYBOOK VARS
     module_name: static
@@ -32,14 +35,17 @@
 #  VARIABLES
 # ////////////////////////////////////////////////////////////////////////////////////////
   environment:
+    TF_VAR_workspace_name: "{{ workspace_name }}"
 
     TF_VAR_state_bucket_name: "{{ state_bucket }}" 
     TF_VAR_state_object_key: "{{ state_object_key }}"
     TF_VAR_state_lock_table_name: "{{ lock_db }}"
+
     AWS_REGION: "{{ aws_region }}"
 
 
   tasks:
+  # DEPLOY //////////////////////////////////////////////////////////////////////
     - name: Run Terraform Deployment for {{ module_name | capitalize }} Resources
       shell:
       args:
@@ -51,11 +57,26 @@
     # - debug:
     #     var: "{{ project_dir }}_{{ module_name }}_results.stdout"
 
+# DESTROY //////////////////////////////////////////////////////////////////////
+    # - name: Grag VPC ID
+    #   amazon.aws.ec2_vpc_net_info:
+    #     filters:
+    #       "tag:Name": "{{ vpc_name }}"
+    #   register: vpc_id
+    #   when: destroy == "true" 
+
+    # - name: Delete Internet gateway
+    #   command: aws ec2 update-deletion-protection \
+    #     --arn "arn:aws:ec2::778295182882:internet-gateway/igw-0a1c69d9f1b0569be" \
+    #     --no-deletion-protected
+    #   register: vpc_igw_delete
+    #   when: destroy == "true" 
+
     - name: Destroy {{ module_name | capitalize }} Resources
       shell:
       args:
         executable: /usr/bin/bash
-        cmd: bash deploy.sh
+        cmd: bash destroy.sh
         chdir: "{{ playbook_path }}/{{ module_name }}/"
       register: destroy_static_results
       when: destroy == "true" 

@@ -1,3 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-terraform destroy
+
+terraform destroy \
+    -auto-approve=true \
+    -lock=false
