@@ -20,3 +20,7 @@ state_bucket: jenkins-state-nightwalkers
 state_object_key: us-east-1/s3/jenkins-terraform.tfstate
 lock_db: tf-state-jenkins-lock
 
+# SECRETS
+git_token:
+become_root: true
+

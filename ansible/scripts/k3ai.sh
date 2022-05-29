@@ -9,8 +9,10 @@ then
     exit
 fi
 
-echo "k3ai -- creating cluster"
 k3ai up
+echo "k3ai -- creating cluster"
+k3ai cluster deploy --type k3s -n kubecluster
+k3ai plugin deploy -n mlflow -t kubecluster
 echo "k3ai -- cluster created successfuly"
 echo "k3ai -- list clusters"
 k3ai cluster list --all
