@@ -31,6 +31,7 @@
     module_name: static
     playbook_path: "{{ project_path }}/{{ project_dir }}/ansible/terraform/{{ cloud_provider }}"
 
+
 # ////////////////////////////////////////////////////////////////////////////////////////
 #  VARIABLES
 # ////////////////////////////////////////////////////////////////////////////////////////
@@ -57,21 +58,8 @@
     # - debug:
     #     var: "{{ project_dir }}_{{ module_name }}_results.stdout"
 
+
 # DESTROY //////////////////////////////////////////////////////////////////////
-    # - name: Grag VPC ID
-    #   amazon.aws.ec2_vpc_net_info:
-    #     filters:
-    #       "tag:Name": "{{ vpc_name }}"
-    #   register: vpc_id
-    #   when: destroy == "true" 
-
-    # - name: Delete Internet gateway
-    #   command: aws ec2 update-deletion-protection \
-    #     --arn "arn:aws:ec2::778295182882:internet-gateway/igw-0a1c69d9f1b0569be" \
-    #     --no-deletion-protected
-    #   register: vpc_igw_delete
-    #   when: destroy == "true" 
-
     - name: Destroy {{ module_name | capitalize }} Resources
       shell:
       args:
