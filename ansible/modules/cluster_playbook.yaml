@@ -38,8 +38,11 @@
     TF_VAR_state_bucket_name: "{{ state_bucket }}"
     TF_VAR_state_object_key: "{{ state_object_key }}"
     TF_VAR_state_lock_table_name: "{{ lock_db }}"
+
     AWS_REGION: "{{ aws_region }}"
     GCP_REGION: "{{ gcp_region }}"
+
+    TF_VAR_project_id: "{{ gcp_project_id }}"
 
 
 # ////////////////////////////////////////////////////////////////////////////////////////

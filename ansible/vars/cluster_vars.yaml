@@ -1,21 +1,23 @@
 ---
 # PROJECT DETAILS
-repo_name: KubeflowCluster
-repo_path: ~/Git  # PATH OF REPO DIR ROOT 
-owner_name: mg
+repo_name: KubeflowCluster    # REPO DIR NAME
+repo_path: ~/Git              # PATH OF REPO DIR ROOT 
+owner_name: mg  
 
-workspace_name: jenkins #TERRAFORM WORKSPACE NAME
+workspace_name: jenkins       #TERRAFORM WORKSPACE NAME
 
-provisioner_type: terraform
-provider_type: aws  
-#| TERRAFORM: aws, gcp | SCRIPTS: kind, k3s, k3ai
+provisioner_type: terraform   # terraform OR scripts
+provider_type: aws            #| TERRAFORM: aws, gcp | SCRIPTS: kind, k3s, k3ai
 
-cluster_name: kubeflow
-cluster_selector: eks  
-# eks, ecs, gke, gcm, kind, k3s, k3ai
+cluster_name: kubeflow        # WHAT TO NAME THE NEW CLUSTER
+cluster_selector: eks         # DETERMINE CLUSTER TYPE
+                              # eks, ecs, gke, gcm, kind, k3s, k3ai
 
-aws_default_region: us-west-2
-gcp_default_region: us-west1
+# CLOUD PROVIDER DETAILS
+aws_default_region: us-west-2 # DEFAULT AWS REGION
+gcp_default_region: us-west1  # DEFAULT GCP REGION
+
+gcp_project_id: kubeflow-gke  # GCP PROJECT ID 
 
 # REMOTE STATE
 state_bucket: jenkins-state-nightwalkers

@@ -43,9 +43,10 @@ pipeline {
     }
     environment {
         // USER
-        CREATOR_NAME = 'mg'
+        OWNER_NAME = 'mg'
         CREATOR_COMMENTS = 'dev GCP test deployment'
         CREATION_DATE = '05/09/2022'
+        WORKSPACE = 'default'
 
         // CREDENTIALS
         AWS_CREDENTIALS = credentials('aws-aline-jenkins')
@@ -54,13 +55,18 @@ pipeline {
 
         // CONFIGURATION VARIABLES
         BUILD_BRANCH_NAME = 'dev'
-        CLOUD_PROVIDER = 'GCP'
+        PROVISIONER_TYPE = 'terraform'
+        //| TERRAFORM: aws, gcp | SCRIPTS: kind, k3s, k3ai
+        PROVIDER_TYPE = 'gcp'
+        // eks, ecs, gke, gcm, kind, k3s, k3ai
+        CLUSTER_TYPE = 
+
+        // REPOSITORY VARIABLES
         IMAGE_REPO = '${GCP_IMAGE_REPO}'
         IMAGE_REPO_REGION = 'us-east1'
         BUILD_ID = '0.0.1'
         DEPLOYMENT_TYPE = ''
         
-
         // AWS VARIABLES
         AWS_DEFAULT_REGION = '${AWS_DEFAULT_REGION}'
 
@@ -69,37 +75,6 @@ pipeline {
         LOCATION = '${GCP_GKE_LOCATION}'
         CLIENT_EMAIL = '${GCP_CLIENT_EMAIL}'
         PROJECT_ID = "aline-jenkins-gcp"
-
-        // DEPLOYMENT SCHEMA /////////////////////////////////
-
-        // DEV
-        DEV_ACTIVE = 'true'
-        DEV_CLOUD_PROVIDER = 'GCP'
-        DEV_DEPLOYMENT_TYPE = 'ECS'
-        DEV_NAMESPACE = 'dev'
-        // STAGE
-        STAGE_ACTIVE = 'false'
-        STAGE_CLOUD_PROVIDER = 'GCP'
-        STAGE_DEPLOYMENT_TYPE = ' GKE'
-        STAGE_NAMESPACE = 'stage'
-        // PROD
-        PROD_ACTIVE = 'false'
-        PROD_CLOUD_PROVIDER = 'GCP'
-        PROD_DEPLOYMENT_TYPE = 'GKE'
-        PROD_NAMESPACE = 'prod'
-
-        // AWS DEPLOYMENTS /////////////////////////////////
-
-        // ECS VARIABLES
-        AWS_ECR_REGION = '${AWS_ECR_REGION}'
-        AWS_ECS_SERVICE = '${CREATOR_NAME}-dev-aline-service'
-        AWS_ECS_TASK_DEFINITION = '${CREATOR_NAME}-dev-aline-taskdefinition'
-        AWS_ECS_COMPATIBILITY = 'FARGATE'
-        AWS_ECS_NETWORK_MODE = 'awsvpc'
-        AWS_ECS_CPU = '256'
-        AWS_ECS_MEMORY = '512'
-        AWS_ECS_CLUSTER = 'aline-dev'
-        AWS_ECS_TASK_DEFINITION_PATH = './ecs/container-definition-update-image.json'
     }
     stages {
         stage('PROVIDER AUTHENTICATION AWS') {
