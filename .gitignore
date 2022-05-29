@@ -146,3 +146,12 @@ ansible/terraform/aws/clusters/eks/.terraform/modules/modules.json
 ansible/terraform/aws/clusters/eks/.terraform/providers/registry.terraform.io/terraform-aws-modules/http/2.4.1/linux_amd64/CHANGELOG.md
 ansible/terraform/aws/clusters/eks/terraform.tfstate.backup
 ansible/terraform/aws/clusters/eks/tf-static.plan
+ansible/terraform/gcp/clusters/gke/.terraform/providers/registry.terraform.io/hashicorp/kubernetes/2.11.0/linux_amd64/terraform-provider-kubernetes_v2.11.0_x5
+ansible/terraform/gcp/clusters/gke/.terraform/providers/registry.terraform.io/hashicorp/google/3.52.0/linux_amd64/terraform-provider-google_v3.52.0_x5
+ansible/terraform/gcp/clusters/gke/.terraform/terraform.tfstate
+ansible/terraform/gcp/clusters/gke/tf-gke.plan
+ansible/terraform/gcp/clusters/gke/.terraform.lock.hcl
+ansible/terraform/aws/clusters/eks/terraform.tfstate.d/jenkins/terraform.tfstate.backup
+ansible/terraform/aws/clusters/eks/terraform.tfstate.d/jenkins/terraform.tfstate
+ansible/terraform/aws/clusters/eks/.terraform/terraform.tfstate
+ansible/terraform/aws/clusters/eks/.terraform/environment

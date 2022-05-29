@@ -18,5 +18,5 @@ terraform apply \
     -lock=false \
     tf-$DEPLOYMENT_NAME.plan
 
-gcloud container clusters get-credentials kubeflow-cluster-gke --zone=us-west1
-gcloud container clusters get-credentials kubeflow-cluster-gke --zone=us-west1
+# GRAB KUBECONFIG FOR NEW CLUSTER
+gcloud container clusters get-credentials kubeflow-cluster-gke --zone=$GCP_REGION

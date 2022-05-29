@@ -39,7 +39,12 @@
     TF_VAR_state_object_key: "{{ state_object_key }}"
     TF_VAR_state_lock_table_name: "{{ lock_db }}"
     AWS_REGION: "{{ aws_region }}"
+    GCP_REGION: "{{ gcp_region }}"
 
+
+# ////////////////////////////////////////////////////////////////////////////////////////
+#  TASKS
+# ////////////////////////////////////////////////////////////////////////////////////////
   tasks:
 
 # ////////////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +58,7 @@
         executable: /usr/bin/bash
         cmd: bash deploy.sh
         chdir: "{{ playbook_path }}/{{ cloud_provider }}/{{ module_name }}s/{{ cluster_type }}/"
-      register: deploy_cluster_results
+      register: deploy_cloud_cluster_results
       when: (destroy == "false") and (provisioner == "terraform")
     # - debug:
     #     var: results.stdout
@@ -66,7 +71,7 @@
         executable: /usr/bin/bash
         cmd: bash destroy.sh
         chdir: "{{ playbook_path }}/{{ cloud_provider }}/{{ module_name }}s/{{ cluster_type }}/"
-      register: destroy_cluster_results
+      register: destroy_cloud_cluster_results
       when: (destroy == "true") and (provisioner == "terraform")
     # - debug:
     #     var: "{{ project_dir }}_{{ module_name }}_results.stdout"
@@ -81,9 +86,9 @@
       shell:
       args:
         executable: /usr/bin/bash
-        cmd: "bash {{ cluster_type }}.sh"
+        cmd: "bash k3ai.sh -a deploy -n {{ owner-name }}-{{ cluster_name }}-{{ cluster_type }} -t {{ cluster_type }}"
         chdir: "{{ playbook_path }}/"
-      register: deploy_cluster_results
+      register: deploy_k3ai_cluster_results
       when: (destroy == "false") and (provisioner == "scripts")
     # - debug:
     #     var: "{{ project_dir }}_{{ module_name }}_results.stdout"
@@ -94,9 +99,9 @@
       shell:
       args:
         executable: /usr/bin/bash
-        cmd: "bash {{ cluster_type }}.sh"
+        cmd: "bash k3ai.sh -a destroy -n {{ owner-name }}-{{ cluster_name }}-{{ cluster_type }}"
         chdir: "{{ playbook_path }}/"
-      register: destroy_cluster_results
+      register: destroy_k3ai_cluster_results
       when: (destroy == "true") and (provisioner == "scripts")
     # - debug:
     #     var: "{{ project_dir }}_{{ module_name }}_results.stdout"

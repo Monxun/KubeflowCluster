@@ -2,14 +2,16 @@
 # PROJECT DETAILS
 repo_name: KubeflowCluster
 repo_path: ~/Git  # PATH OF REPO DIR ROOT 
+owner_name: mg
 
 workspace_name: jenkins #TERRAFORM WORKSPACE NAME
 
-provisioner_type: scripts
+provisioner_type: terraform
 provider_type: aws  
 #| TERRAFORM: aws, gcp | SCRIPTS: kind, k3s, k3ai
 
-cluster_selector: k3ai  
+cluster_name: kubeflow
+cluster_selector: eks  
 # eks, ecs, gke, gcm, kind, k3s, k3ai
 
 aws_default_region: us-west-2
