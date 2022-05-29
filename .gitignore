@@ -144,3 +144,4 @@ ansible/terraform/aws/clusters/eks/.terraform/providers/registry.terraform.io/ha
 ansible/terraform/aws/clusters/eks/.terraform/providers/registry.terraform.io/terraform-aws-modules/http/2.4.1/linux_amd64/terraform-provider-http_v2.4.1
 ansible/terraform/aws/clusters/eks/.terraform/modules/modules.json
 ansible/terraform/aws/clusters/eks/.terraform/providers/registry.terraform.io/terraform-aws-modules/http/2.4.1/linux_amd64/CHANGELOG.md
+ansible/terraform/aws/clusters/eks/terraform.tfstate.backup
