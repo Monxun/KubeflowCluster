@@ -46,7 +46,7 @@
         executable: /usr/bin/bash
         cmd: bash deploy.sh
         chdir: "{{ playbook_path }}/{{ module_name }}/"
-      register: "{{ project_dir }}_{{ module_name }}_results"
+      register: deploy_static_results
       when: destroy == "false" 
     # - debug:
     #     var: "{{ project_dir }}_{{ module_name }}_results.stdout"
@@ -57,7 +57,7 @@
         executable: /usr/bin/bash
         cmd: bash deploy.sh
         chdir: "{{ playbook_path }}/{{ module_name }}/"
-      register: "{{ project_dir }}_{{ module_name }}_results"
+      register: destroy_static_results
       when: destroy == "true" 
     # - debug:
     #     var: "{{ project_dir }}_{{ module_name }}_results.stdout"
