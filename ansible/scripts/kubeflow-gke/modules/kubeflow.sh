@@ -6,21 +6,28 @@
 # ////////////////////////////////////////////////////////////////////
 # ENV VARIABLES
 # ///////////////////////////////////////////////////////////////////
-export PROJECT=kubeflow-gke
-export REGION=us-west1
-export ZONE=us-west1-c
-export NAME=kubeflow-gke
-export NODE_POOL=kubeflow-np
-export SERVICE_ACCOUNT_NAME=kubeflow-sa
-export NAMESPACE=sidecar
 
-export ACCOUNT_EMAIL=$MY_EMAIL
+# GRAB TYPE ARG
+while getopts "e:" arg; do
 
-export CLIENT_ID=id
-export CLIENT_SECRET=secrets
+    export PROJECT=kubeflow-gke
+    export REGION=us-west1
+    export ZONE=us-west1-c
+    export NAME=kubeflow-gke
+    export NODE_POOL=kubeflow-np
+    export SERVICE_ACCOUNT_NAME=kubeflow-sa
+    export NAMESPACE=sidecar
 
-export MGMT_PROJECT=$PROJECT
-export MGMT_NAME=flow-mgmt
+    export ACCOUNT_EMAIL=$MY_EMAIL
+
+    export CLIENT_ID=id
+    export CLIENT_SECRET=secrets
+
+    export MGMT_PROJECT=$PROJECT
+    export MGMT_NAME=flow-mgmt
+
+done
+
 
 # ////////////////////////////////////////////////////////////////////
 # CLUSTER CONFIG
