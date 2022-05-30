@@ -1,0 +1,80 @@
+---
+- hosts: localhost
+  become: false
+
+# ////////////////////////////////////////////////////////////////////////////////////////
+#  VARIABLES
+# ////////////////////////////////////////////////////////////////////////////////////////
+  vars_files:
+  - "../vars/kubeflow_vars_vars.yaml"
+
+  vars:
+    # EXTRA VARS
+    destroy: false
+
+    # PROJECT VARS
+    project_dir: "{{  repo_name  }}" 
+    project_path: "{{  repo_path  }}"
+    state: present
+
+    # REGIONS
+    aws_region: "{{  aws_default_region  }}"
+    gcp_region: "{{  gcp_default_region  }}"
+
+    # PLAYBOOK VARS
+    module_name: kubeflow
+    playbook_path: "{{ project_path }}/{{ project_dir }}/ansible"
+
+
+# ////////////////////////////////////////////////////////////////////////////////////////
+#  ENVIRONMENT VARIABLES
+# ////////////////////////////////////////////////////////////////////////////////////////
+  environment:
+    TF_VAR_workspace_name: "{{ workspace_name }}"
+
+    TF_VAR_state_bucket_name: "{{ state_bucket }}" 
+    TF_VAR_state_object_key: "{{ state_object_key }}"
+    TF_VAR_state_lock_table_name: "{{ lock_db }}"
+
+    AWS_REGION: "{{ aws_region }}"
+
+    # GKE CLUSTER / KUBEFLOW INSTALL VARS
+    PROJECT: "{{ gcp_project_id }}"
+    REGION: "{{ gcp_default_region }}"
+    ZONE: "{{ gcp_zone }}"
+    NAME: "{{ cluster_name }}"
+    NODE_POOL: "{{ cluster_name }}-np"
+    SERVICE_ACCOUNT_NAME: "{{ cluster_name }}-sa"
+    NAMESPACE: "{{ namespace }}"
+    ACCOUNT_EMAIL: "{{ account_email }}"
+    CLIENT_ID: "{{ client_id }}"
+    CLIENT_SECRET: "{{ client_secret }}"
+    MGMT_PROJECT: "{{ gcp_project_id }}"
+    MGMT_NAME: "{{ mgmt_name }}"
+
+
+  tasks:
+  # DEPLOY //////////////////////////////////////////////////////////////////////
+    - name: Run Deployment for {{ module_name | capitalize }} Resources
+      shell:
+      args:
+        executable: /usr/bin/bash
+        cmd: bash deploy.sh
+        chdir: "{{ playbook_path }}/{{ module_name }}/kubeflow-gke"
+      register: deploy_kubeflow_results
+      when: destroy == "false" 
+    # - debug:
+    #     var: "{{ project_dir }}_{{ module_name }}_results.stdout"
+
+
+# DESTROY //////////////////////////////////////////////////////////////////////
+    - name: Destroy {{ module_name | capitalize }} Resources
+      shell:
+      args:
+        executable: /usr/bin/bash
+        cmd: bash destroy.sh
+        chdir: "{{ playbook_path }}/{{ module_name }}/"
+      register: destroy_static_results
+      when: destroy == "true" 
+    # - debug:
+    #     var: "{{ project_dir }}_{{ module_name }}_results.stdout"
