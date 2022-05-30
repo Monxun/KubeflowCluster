@@ -5,7 +5,7 @@ export DEPLOYMENT_NAME=${PWD##*/}
 # Start from a clean slate
 rm -rf .terraform
 
-terraform init
+terraform init -lock=false
 
 terraform plan \
     -lock=false \
