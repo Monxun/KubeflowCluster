@@ -6,12 +6,13 @@ owner_name: mg
 
 workspace_name: jenkins       #TERRAFORM WORKSPACE NAME
 
-provisioner_type: terraform   # terraform OR scripts
-provider_type: gcp            #| TERRAFORM: aws, gcp | SCRIPTS: kind, k3s, k3ai
+provisioner_type: scripts     # terraform OR scripts
+provider_type: k3ai           #| TERRAFORM: aws, gcp | SCRIPTS: k3ai, 
 
+# CLUSTER DETAILS                              # eks, ecs, gke, gcm, kind, k3s, k3ai
 cluster_name: kubeflow        # WHAT TO NAME THE NEW CLUSTER
-cluster_selector: gke         # DETERMINE CLUSTER TYPE
-                              # eks, ecs, gke, gcm, kind, k3s, k3ai
+cluster_selector: gke         # DETERMINE CLUSTER TYPE: eks, ecs, gke, gcm, kind, k3s, k3ai
+cluster_namespace: kubeflow   # NAMESPACE TO INSTALL APP INTO
 
 # CLOUD PROVIDER DETAILS
 aws_default_region: us-west-2 # DEFAULT AWS REGION

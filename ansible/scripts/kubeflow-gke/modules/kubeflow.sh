@@ -10,20 +10,20 @@
 # GRAB TYPE ARG
 while getopts "e:" arg; do
 
-    export PROJECT=kubeflow-gke
-    export REGION=us-west1
-    export ZONE=us-west1-c
-    export NAME=kubeflow-gke
-    export NODE_POOL=kubeflow-np
-    export SERVICE_ACCOUNT_NAME=kubeflow-sa
-    export NAMESPACE=sidecar
+    export PROJECT=$PROJECT_ID
+    export REGION=$GCP_REGION
+    export ZONE=$GCP_REGION-c
+    export NAME=$CLUSTER_NAME-gke
+    export NODE_POOL=$CLUSTER_NAME-np
+    export SERVICE_ACCOUNT_NAME=$CLUSTER_NAME-sa
+    export NAMESPACE=$CLUSTER_NAMESPACE
 
     export ACCOUNT_EMAIL=$MY_EMAIL
 
     export CLIENT_ID=id
     export CLIENT_SECRET=secrets
 
-    export MGMT_PROJECT=$PROJECT
+    export MGMT_PROJECT=$PROJECT_ID
     export MGMT_NAME=flow-mgmt
 
 done
