@@ -1,6 +1,6 @@
 ---
-- hosts: localhost
-  become: false
+- hosts: "{{ target_hosts }}"
+  become: "{{ become_root }}"
 
 # ////////////////////////////////////////////////////////////////////////////////////////
 #  VARIABLES
@@ -92,24 +92,22 @@
       shell:
       args:
         executable: /usr/bin/bash
-        cmd: "bash {{ provider }}.sh -a deploy -n {{ owner-name }}-{{ cluster_name }}-{{ cluster_type }} -t {{ cluster_type }}"
-        chdir: "{{ playbook_path }}/"
+        cmd: k3ai cluster deploy --type {{ cluster_type }} -n {{ cluster_name }} && k3ai plugin deploy -n mlflow -t {{ cluster_name }}
+        chdir: "{{ playbook_path }}"
       register: deploy_k3ai_cluster_results
       when: (destroy == "false") and (provisioner == "scripts")
     # - debug:
     #     var: "{{ project_dir }}_{{ module_name }}_results.stdout"
-
+    
 
   # DESTROY //////////////////////////////////////////////////////////////////////
     - name: Destroy {{ module_name | capitalize }} Resources ({{ cluster_type }}) via {{ provisioner_type }}
       shell:
       args:
         executable: /usr/bin/bash
-        cmd: "bash {{ provider }}.sh -a destroy -n {{ owner-name }}-{{ cluster_name }}-{{ cluster_type }}"
-        chdir: "{{ playbook_path }}/"
+        cmd: k3ai cluster remove -n {{ cluster_name }}
+        chdir: "{{ playbook_path }}"
       register: destroy_k3ai_cluster_results
       when: (destroy == "true") and (provisioner == "scripts")
     # - debug:
     #     var: "{{ project_dir }}_{{ module_name }}_results.stdout"
-
-    
