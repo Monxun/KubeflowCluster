@@ -4,7 +4,7 @@ target_hosts: localhost
 
 # PROJECT DETAILS
 repo_name: KubeflowCluster    # REPO DIR NAME
-repo_path: /home/$USER/Git              # PATH OF REPO DIR ROOT 
+repo_path: /home/$USER/Git    # PATH OF REPO DIR ROOT 
 owner_name: mg  
 workspace_name: jenkins       #TERRAFORM WORKSPACE NAME
 
@@ -20,7 +20,7 @@ cluster_namespace: kubeflow   # NAMESPACE TO INSTALL APP INTO
 # CLOUD PROVIDER DETAILS
 aws_default_region: us-west-2 # DEFAULT AWS REGION
 gcp_default_region: us-west1  # DEFAULT GCP REGION
-gcp_project_id: kubeflow-kind  # GCP PROJECT ID 
+gcp_project_id: kubeflow-kind # GCP PROJECT ID 
 
 # REMOTE STATE
 state_bucket: jenkins-state-nightwalkers
