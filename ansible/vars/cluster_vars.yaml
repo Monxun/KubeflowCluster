@@ -10,11 +10,11 @@ workspace_name: jenkins       #TERRAFORM WORKSPACE NAME
 
 # CLUSTER CREATION
 provisioner_type: scripts     # terraform OR scripts
-provider_type: k3ai           #| TERRAFORM: aws, gcp | SCRIPTS: k3ai, 
-cluster_selector: kind 
+provider_type: k3ai           # TERRAFORM: aws, gcp | SCRIPTS: k3ai, 
+cluster_selector: kind        # DETERMINE CLUSTER TYPE: eks, ecs, gke, gcm, kind, k3s, k3ai
 
-# CLUSTER DETAILS                              # eks, ecs, gke, gcm, kind, k3s, k3ai
-cluster_name: kubeflow        # WHAT TO NAME THE NEW CLUSTER        # DETERMINE CLUSTER TYPE: eks, ecs, gke, gcm, kind, k3s, k3ai
+# CLUSTER DETAILS                              
+cluster_name: kubeflow        # WHAT TO NAME THE NEW CLUSTER        
 cluster_namespace: kubeflow   # NAMESPACE TO INSTALL APP INTO
 
 # CLOUD PROVIDER DETAILS
